@@ -93,7 +93,26 @@ sudo apt install encfs</code></pre>
 
 <h2>📦 Installation</h2>
 
-Clone the project and run:
+1. Simply install using the python pip package but first make sure you use Virtal Environment and source the activate:
+
+```bash
+python -v venv venv
+
+# Bash / Zsh
+source venv/bin/activate
+
+# Fish shell
+source venv/bin/activate.fish
+
+# C shell (csh / tcsh)
+source venv/bin/activate.csh
+
+```
+#### Install Ceasar-toolkit
+```bash
+pip install ceasar-toolkit
+```
+2. Clone the project and run:
 
 <pre><code>git clone https://github.com/yourname/Ceasar-cipher-toolkit.git
 cd Ceasar-cipher-toolkit
