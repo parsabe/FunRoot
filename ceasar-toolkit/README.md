@@ -1,8 +1,8 @@
 
 <img src="logo.jpg" width="1080" height="540">
-<h1>🔐 Caesar Cipher Toolkit</h1>
+<h1>🔐 Ceasar Cipher Toolkit</h1>
 
-<p><strong>Caesar Cipher Toolkit</strong> is a free, open-source CLI framework for encoding and decoding files using the classic Caesar cipher. It also includes powerful tools to encrypt PDFs and folders — without compressing or modifying original file contents.</p>
+<p><strong>Ceasar Cipher Toolkit</strong> is a free, open-source CLI framework for encoding and decoding files using the classic Ceasar cipher. It also includes powerful tools to encrypt PDFs and folders — without compressing or modifying original file contents.</p>
 
 <p><strong>No command-line arguments required</strong> — just run and go. The interactive menu handles everything.</p>
 
@@ -12,7 +12,7 @@
 
 <ul>
   <li>Interactive menu-driven interface</li>
-  <li>Caesar cipher encode/decode with header-based shift tracking</li>
+  <li>Ceasar cipher encode/decode with header-based shift tracking</li>
   <li>PDF file encryption and decryption with password</li>
   <li>Folder encryption using <code>encfs</code> (no zipping or renaming)</li>
   <li>Animated loading spinners for all actions</li>
@@ -26,8 +26,8 @@
 <p>Then choose one of the options:</p>
 
 <pre><code>
-1. Caesar Encode Text
-2. Caesar Decode Text
+1. Ceasar Encode Text
+2. Ceasar Decode Text
 3. Encrypt PDF
 4. Decrypt PDF
 5. Encrypt Folder (EncFS)
@@ -35,7 +35,7 @@
 7. Exit
 </code></pre>
 
-<h2>🧠 Caesar Cipher Usage</h2>
+<h2>🧠 Ceasar Cipher Usage</h2>
 
 <ul>
   <li>Encodes any text file with a shift you provide</li>
@@ -95,8 +95,8 @@ sudo apt install encfs</code></pre>
 
 Clone the project and run:
 
-<pre><code>git clone https://github.com/yourname/caesar-cipher-toolkit.git
-cd caesar-cipher-toolkit
+<pre><code>git clone https://github.com/yourname/Ceasar-cipher-toolkit.git
+cd Ceasar-cipher-toolkit
 python main.py
 </code></pre>
 
