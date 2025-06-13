@@ -112,6 +112,8 @@ source venv/bin/activate.csh
 ```bash
 pip install ceasar-toolkit
 ```
+Then simply call ``ceasar``in your commands.
+
 2. Clone the project and run:
 
 <pre><code>git clone https://github.com/yourname/Ceasar-cipher-toolkit.git
