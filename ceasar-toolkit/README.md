@@ -1,5 +1,5 @@
 
-<img src="logo.jpg" width="1080" height="540">
+<img src="logo.png" width="1080" height="540">
 <h1>🔐 Ceasar Cipher Toolkit</h1>
 
 <p><strong>Ceasar Cipher Toolkit</strong> is a free, open-source CLI framework for encoding and decoding files using the classic Ceasar cipher. It also includes powerful tools to encrypt PDFs and folders — without compressing or modifying original file contents.</p>
