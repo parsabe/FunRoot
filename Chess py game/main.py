@@ -35,7 +35,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Chess')
 
 
-STOCKFISH_PATH = r"C:\Users\Hounaar\Desktop\Chess py game\stockfish-windows-x86-64-avx2\stockfish\stockfish-windows-x86-64-avx2.exe"
+STOCKFISH_PATH = r"path/to/stockfish-windows-x86-64-avx2.exe"
 
 
 def main():
