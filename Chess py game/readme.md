@@ -26,14 +26,15 @@ This is a Python-based chess game where you can play against the computer using 
     ```
 
 2. **Install the required libraries:**
-
+Make sure you have already created a Virtual Environment for Pip to install.
     ```sh
-    pip install pygame python-chess
+    pip install pygame chess
     ```
 
 3. **Download and setup the Stockfish engine:**
 
     - Download the Stockfish engine from the official website: [Stockfish Downloads](https://stockfishchess.org/download/)
+      or you can simply download from the repository's release packages. <a href="https://github.com/parsabe/FunRoot/releases/tag/stockfish-chess">click here</a> 
     - Extract the downloaded file and place the `stockfish.exe` in a known location.
     - Update the `STOCKFISH_PATH` variable in the script with the path to your `stockfish.exe`.
 
