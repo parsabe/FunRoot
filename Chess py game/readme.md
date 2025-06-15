@@ -1,5 +1,6 @@
 # Chess Game
 
+<img src="https://github.com/parsabe/FunRoot/blob/master/Chess%20py%20game/logo.gif">
 This is a Python-based chess game where you can play against the computer using the Stockfish chess engine. The game uses `pygame` for the graphical interface and `python-chess` for the game logic.
 
 ## Features
