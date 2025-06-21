@@ -1,0 +1,46 @@
+# ─── GLOBAL ─────────────────────────────────────────────
+desktop-image: "morpheus-overlay.png"
+desktop-color: "#000000"
+desktop-image-h-align: "center"
+desktop-image-v-align: "center"
+desktop-image-scale-method: "stretch"
+
+terminal-font: "matrix.pf2"
+
+# ─── CENTERED QUOTE ────────────────────────────────────
++ label {
+    text: "Take the blue pill, you wake up in Windows and believe what you want to believe.\nTake the red pill, you stay in wonderland and I show you how deep the rabbit hole goes";
+    font: "matrix.pf2";
+    color: "#00FF00";
+    left: 50%;
+    top: 20%;
+    align: "center";    # center the text block
+}
+
+# ─── MENU OVER MORPHEUS’S HANDS ─────────────────────────
++ boot_menu {
+    left: 43%;           # start here—tweak ±1% for perfect alignment
+    top: 62%;            # first entry (“Kali Linux”) on red pill
+    width: 14%;          # narrow box so two items sit over each pill
+    height: 14%;         # enough room for both entries
+
+    item_font: "matrix.pf2";
+    item_color: "#00FF00";
+    selected_item_font: "matrix.pf2";
+    selected_item_color: "#00FF00";
+    item_height: 32px;
+    item_spacing: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
