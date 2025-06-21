@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2021 at 11:44 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 7.3.26
+-- Erstellungszeit: 21. Jun 2025 um 13:38
+-- Server-Version: 10.4.32-MariaDB
+-- PHP-Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,70 +18,74 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `chatapp`
+-- Datenbank: `chatapp`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- Tabellenstruktur für Tabelle `messages`
 --
 
 CREATE TABLE `messages` (
   `msg_id` int(11) NOT NULL,
   `incoming_msg_id` int(255) NOT NULL,
   `outgoing_msg_id` int(255) NOT NULL,
-  `msg` varchar(1000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `msg` varchar(1000) NOT NULL,
+  `files` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `voice` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `msg_type` enum('text','voice') NOT NULL DEFAULT 'text'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tabellenstruktur für Tabelle `users`
 --
 
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL,
-  `unique_id` int(255) NOT NULL,
+  `user_id` int(5) NOT NULL,
+  `unique_id` int(5) NOT NULL,
   `fname` varchar(255) NOT NULL,
   `lname` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `img` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `status` varchar(255) NOT NULL,
+  `date` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Indexes for dumped tables
+-- Indizes der exportierten Tabellen
 --
 
 --
--- Indexes for table `messages`
+-- Indizes für die Tabelle `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`msg_id`);
 
 --
--- Indexes for table `users`
+-- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT für exportierte Tabellen
 --
 
 --
--- AUTO_INCREMENT for table `messages`
+-- AUTO_INCREMENT für Tabelle `messages`
 --
 ALTER TABLE `messages`
   MODIFY `msg_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
