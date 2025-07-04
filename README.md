@@ -7,8 +7,8 @@ You can check out the current projects:
   <li><a href="https://github.com/parsabe/FunRoot/tree/master/Chess%20py%20game">Chess pygame</a></li>
   <li><a href="https://github.com/parsabe/FunRoot/tree/master/devops-roadmap">DevOps RoadMap</a></li>
   <li><a href="https://github.com/parsabe/FunRoot/tree/master/ChatApp">ChatApp</a></li>
-
-  
+<li><a href="https://github.com/parsabe/FunRoot/tree/master/ChatApp">2048</a></li>
+  <li><a href="https://github.com/parsabe/FunRoot/tree/master/ChatApp">Dacner</a></li>
   
 </ul>
 
