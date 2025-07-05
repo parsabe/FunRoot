@@ -2,6 +2,12 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 
+
+
+
+
+
+
 SIZE = 4
 TILE_COLORS = {
     0: "#cdc1b4", 2: "#eee4da", 4: "#ede0c8", 8: "#f2b179",
