@@ -4,9 +4,7 @@ import chess.engine
 import sys
 import os
 
-
 pygame.init()
-
 
 WIDTH, HEIGHT = 800, 800
 DIMENSION = 8
