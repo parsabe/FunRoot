@@ -9,7 +9,6 @@ You can check out the current projects:
   <li><a href="https://github.com/parsabe/FunRoot/tree/master/ChatApp">ChatApp</a></li>
 <li><a href="https://github.com/parsabe/FunRoot/tree/master/2048">2048</a></li>
   <li><a href="https://github.com/parsabe/FunRoot/tree/master/Dancer">Dacner</a></li>
-  
 </ul>
 
-Feel free to check out. Also, all contributions are welcome. 
+Feel free to check out. jects you can say that and practices are here. Feel f 
