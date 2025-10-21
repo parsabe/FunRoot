@@ -5,6 +5,7 @@ desktop-image-h-align: "center"
 desktop-image-v-align: "center"
 desktop-image-scale-method: "stretch"
 
+
 terminal-font: "matrix.pf2"
 
 # ─── CENTERED QUOTE ────────────────────────────────────
