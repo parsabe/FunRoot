@@ -1,7 +1,6 @@
 # FunRoot
 All my Fun Projects and practices are here. Feel free to join.
 
-
 You can check out the current projects:
 <ul>
   <li><a href="https://github.com/parsabe/FunRoot/tree/master/matrix-grub">Matrix Grub</a></li>
@@ -12,4 +11,4 @@ You can check out the current projects:
   <li><a href="https://github.com/parsabe/FunRoot/tree/master/Dancer">Dacner</a></li>
 </ul>
 
-Feel free to check out. jects you can say that and practices are here. Feel f 
+Feel free to check out.
