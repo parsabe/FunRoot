@@ -9,6 +9,8 @@ RUN apt-get update && \
     apt-get install -y ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
+RUN pip install --upgrade pip    
+
 # Copy your requirements file and install the Python libraries
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
