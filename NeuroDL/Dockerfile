@@ -11,7 +11,7 @@ RUN apt-get update && \
 
 # Copy your requirements file and install the Python libraries
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r req.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all your files into the container (bot.py, cookies.txt, etc.)
 COPY . .
