@@ -64,7 +64,8 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Adjust config based on what the user clicked
     if choice == 'video':
-        ydl_opts['format'] = 'b' # Grabs the best pre-merged, Telegram-friendly video
+        ydl_opts['format'] = 'bestvideo+bestaudio/best'
+        ydl_opts['merge_output_format'] = 'mp4' # Grabs the best pre-merged, Telegram-friendly video
     elif choice == 'audio':
         ydl_opts['format'] = 'bestaudio/best'
         ydl_opts['postprocessors'] = [{
