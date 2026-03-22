@@ -37,6 +37,73 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
+    await query.answer()
+    
+    choice = query.data
+    url = context.user_data.get('current_url')
+    
+    if not url:
+        await query.edit_message_text("Session expired. Please send the link again.")
+        return
+
+    await query.edit_message_text(f"⏳ Downloading {choice}... This might take a minute.")
+
+    # Base configuration for yt-dlp
+    ydl_opts = {
+        'outtmpl': 'temp_download_%(id)s.%(ext)s',
+        'quiet': True,
+        'no_warnings': True,
+        # THE FIX: The *correct* nested dictionary syntax for Python
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['ios', 'android']
+            }
+        }
+    }
+
+    # CRITICAL: ONLY use cookies for Instagram.
+    if 'instagram.com' in url:
+        ydl_opts['cookiefile'] = 'cookies.txt'
+
+    # Adjust config based on what the user clicked
+    if choice == 'video':
+        # The ultimate fallback chain: Try merging first, if that fails, grab the best pre-merged (b)
+        ydl_opts['format'] = 'bestvideo+bestaudio/b/best'
+        ydl_opts['merge_output_format'] = 'mp4' 
+    elif choice == 'audio':
+        ydl_opts['format'] = 'bestaudio/best'
+        ydl_opts['postprocessors'] = [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }]
+
+    filename = None
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=True)
+            filename = ydl.prepare_filename(info)
+            
+            if choice == 'audio':
+                filename = filename.rsplit('.', 1)[0] + '.mp3'
+
+        await query.edit_message_text("📤 Uploading to Telegram...")
+        
+        with open(filename, 'rb') as file:
+            if choice == 'video':
+                await context.bot.send_video(chat_id=query.message.chat_id, video=file)
+            else:
+                await context.bot.send_audio(chat_id=query.message.chat_id, audio=file)
+        
+        await query.edit_message_text("✅ Done!")
+
+    except Exception as e:
+        await query.edit_message_text(f"❌ An error occurred: {str(e)}")
+        
+    finally:
+        if filename and os.path.exists(filename):
+            os.remove(filename)    
+            query = update.callback_query
     await query.answer() # Acknowledge the button click
     
     choice = query.data
