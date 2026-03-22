@@ -53,6 +53,8 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         'outtmpl': 'temp_download_%(id)s.%(ext)s',
         'quiet': True,
         'no_warnings': True,
+        # THE ULTIMATE BYPASS: Pretend to be a mobile Safari browser to dodge bot-checks
+        'extractor_args': {'youtube': ['player_client=web_safari,android']},
     }
 
     # --- SMART COOKIE ROUTING ---
