@@ -53,10 +53,15 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         'outtmpl': 'temp_download_%(id)s.%(ext)s',
         'quiet': True,
         'no_warnings': True,
-        'cookiefile': 'cookies.txt', # <--- THIS IS THE NEW LINE
     }
 
-    # Adjust config based on what the user clicked
+    # --- SMART COOKIE ROUTING ---
+    # Give yt-dlp the right keys for the right website
+    if 'instagram.com' in url:
+        ydl_opts['cookiefile'] = 'instagram_cookies.txt'
+    elif 'youtube.com' in url or 'youtu.be' in url:
+        ydl_opts['cookiefile'] = 'youtube_cookies.txt'
+
     # Adjust config based on what the user clicked
     if choice == 'video':
         ydl_opts['format'] = 'b' # Grabs the best pre-merged, Telegram-friendly video
@@ -68,6 +73,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             'preferredquality': '192',
         }]
 
+    filename = None
     try:
         # Download the file
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -87,12 +93,15 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             else:
                 await context.bot.send_audio(chat_id=query.message.chat_id, audio=file)
         
-        # Clean up: delete the file from the VPS so your storage doesn't get full
-        os.remove(filename)
         await query.edit_message_text("✅ Done!")
 
     except Exception as e:
         await query.edit_message_text(f"❌ An error occurred: {str(e)}")
+        
+    finally:
+        # ALWAYS clean up: delete the file from the VPS so your storage doesn't get full
+        if filename and os.path.exists(filename):
+            os.remove(filename)
 
 def main():
     # Start the bot
