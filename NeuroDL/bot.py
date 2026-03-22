@@ -53,6 +53,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         'outtmpl': 'temp_download_%(id)s.%(ext)s',
         'quiet': True,
         'no_warnings': True,
+        'cookiefile': 'cookies.txt', # <--- THIS IS THE NEW LINE
     }
 
     # Adjust config based on what the user clicked
