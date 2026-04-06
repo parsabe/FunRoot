@@ -63,15 +63,16 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
     # --- FORMAT LOGIC ---
+
     if choice == 'video':
-        if 'instagram.com' in url:
-            # Instagram plays better when we just ask for the best pre-merged file
-            ydl_opts['format'] = 'bestvideo+bestaudio/best'
-        else:
-            # YouTube needs the strict MP4/M4A merge for Telegram
-            ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
-            
-        ydl_opts['merge_output_format'] = 'mp4' 
+        # 1. Grab the absolute best video and audio streams available
+        ydl_opts['format'] = 'bestvideo+bestaudio/best'
+        
+        # 2. Force FFmpeg to convert the final merged file into an MP4 for Telegram
+        ydl_opts['postprocessors'] = [{
+            'key': 'FFmpegVideoConvertor',
+            'preferedformat': 'mp4',
+        }]
 
     elif choice == 'audio':
         ydl_opts['format'] = 'bestaudio/best'
@@ -80,6 +81,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }]
+   
 
     filename = None
     try:
