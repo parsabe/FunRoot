@@ -9,16 +9,12 @@ RUN apt-get update && \
     apt-get install -y ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
+# Upgrade pip
 RUN pip install --upgrade pip    
 
 # Copy your requirements file and install the Python libraries
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-# If using a Debian/Ubuntu-based Python image:
-RUN apt-get update && apt-get install -y ffmpeg
-
-# If using an Alpine-based Python image:
-# RUN apk add --no-cache ffmpeg
 
 # Copy all your files into the container (bot.py, cookies.txt, etc.)
 COPY . .
