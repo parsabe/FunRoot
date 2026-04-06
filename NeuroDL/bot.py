@@ -68,12 +68,18 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # ULTIMATE INSTAGRAM FIX: Force the pre-merged single file
             ydl_opts['format'] = 'best' 
         else:
-            # YouTube gets the high-quality merge treatment
-            ydl_opts['format'] = 'bestvideo+bestaudio/best'
+            # YouTube gets the high-quality merge treatment.
+            # Force mp4 video and m4a audio so Telegram plays sound correctly!
+            ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
             
+        ydl_opts['merge_output_format'] = 'mp4'
+
+    elif choice == 'audio':
+        ydl_opts['format'] = 'bestaudio/best'
         ydl_opts['postprocessors'] = [{
-            'key': 'FFmpegVideoConvertor',
-            'preferedformat': 'mp4',
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
         }]
 
     filename = None
@@ -81,11 +87,14 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Download the file
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
-            filename = ydl.prepare_filename(info)
             
-            # Update filename if audio post-processor changed the extension
-            if choice == 'audio':
-                filename = filename.rsplit('.', 1)[0] + '.mp3'
+            # Ensure we get the correct filename to avoid errors
+            if 'requested_downloads' in info:
+                filename = info['requested_downloads'][0]['filepath']
+            else:
+                filename = ydl.prepare_filename(info)
+                if choice == 'audio':
+                    filename = filename.rsplit('.', 1)[0] + '.mp3'
 
         await query.edit_message_text("📤 Uploading to Telegram...")
         
