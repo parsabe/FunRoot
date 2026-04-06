@@ -46,8 +46,8 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Base configuration for yt-dlp
     ydl_opts = {
         'outtmpl': 'temp_download_%(id)s.%(ext)s',
-        'quiet': True,
-        'no_warnings': True,
+        'quiet': False,
+        'no_warnings': False,
         'extractor_args': {
             'youtube': {
                 'player_client': ['ios', 'android', 'web']
@@ -65,10 +65,17 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ydl_opts['cookiefile'] = 'youtube_cookies.txt'
 
     # --- FORMAT LOGIC ---
+    # --- FORMAT LOGIC ---
     if choice == 'video':
-        # Force mp4 and m4a for maximum Telegram compatibility
-        ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+        if 'instagram.com' in url:
+            # Instagram plays better when we just ask for the best pre-merged file
+            ydl_opts['format'] = 'bestvideo+bestaudio/best'
+        else:
+            # YouTube needs the strict MP4/M4A merge for Telegram
+            ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+            
         ydl_opts['merge_output_format'] = 'mp4' 
+
     elif choice == 'audio':
         ydl_opts['format'] = 'bestaudio/best'
         ydl_opts['postprocessors'] = [{
