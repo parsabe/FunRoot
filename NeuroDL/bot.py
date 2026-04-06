@@ -43,7 +43,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.edit_message_text(f"⏳ Downloading {choice}... This might take a minute.")
 
-    # Base configuration (Notice we DO NOT load cookies here anymore)
+    # Base configuration 
     ydl_opts = {
         'outtmpl': 'temp_download_%(id)s.%(ext)s',
         'quiet': False,
@@ -52,7 +52,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # --- THE MAGIC ROUTING ---
     
-    # 1. YOUTUBE RULES (Needs cookies & high-quality merge)
+    # 1. YOUTUBE (Needs cookies & strict mp4 formatting)
     if 'youtube.com' in url or 'youtu.be' in url:
         if os.path.exists('cookies.txt'):
             ydl_opts['cookiefile'] = 'cookies.txt'
@@ -72,10 +72,16 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 'preferredquality': '192',
             }]
 
-    # 2. INSTAGRAM RULES (No cookies, force Format 0 for audio!)
+    # 2. INSTAGRAM (No cookies, Browser Impersonation, Force Format 0)
+
     elif 'instagram.com' in url:
+        # Tell Instagram we are the official Google Web Crawler
+        ydl_opts['http_headers'] = {
+            'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+        }
+        
         if choice == 'video':
-            ydl_opts['format'] = '0/best' # Forces the audio-embedded mp4
+            ydl_opts['format'] = '0/best'   # Grabs the old-school file with audio baked in
         elif choice == 'audio':
             ydl_opts['format'] = '0/best'
             ydl_opts['postprocessors'] = [{
@@ -84,24 +90,23 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 'preferredquality': '192',
             }]
             
-    # 3. FALLBACK FOR TIKTOK/OTHER
+    # 3. EVERYWHERE ELSE
     else:
         ydl_opts['format'] = 'best'
 
     filename = None
     try:
-        # Download the file
+        # Download the file using pure yt-dlp
+        print(f"Routing to yt-dlp for {url}...")
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
             
-            # Update filename if audio post-processor changed the extension
             if choice == 'audio':
                 filename = filename.rsplit('.', 1)[0] + '.mp3'
 
         await query.edit_message_text("📤 Uploading to Telegram...")
         
-        # Upload to Telegram
         with open(filename, 'rb') as file:
             if choice == 'video':
                 await context.bot.send_video(chat_id=query.message.chat_id, video=file)
