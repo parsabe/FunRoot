@@ -55,16 +55,13 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         }
     }
 
-    # --- SMART COOKIE ROUTING ---
-    # We use os.path.exists to prevent yt-dlp from crashing if the cookie file is missing from the Docker container
-    if 'instagram.com' in url:
-        if os.path.exists('instagram_cookies.txt'):
-            ydl_opts['cookiefile'] = 'instagram_cookies.txt'
-    elif 'youtube.com' in url or 'youtu.be' in url:
-        if os.path.exists('youtube_cookies.txt'):
-            ydl_opts['cookiefile'] = 'youtube_cookies.txt'
 
-    # --- FORMAT LOGIC ---
+    if os.path.exists('cookies.txt'):
+        ydl_opts['cookiefile'] = 'cookies.txt'
+    else:
+        print("WARNING: cookies.txt not found in the container!")
+
+
     # --- FORMAT LOGIC ---
     if choice == 'video':
         if 'instagram.com' in url:
