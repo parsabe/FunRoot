@@ -64,14 +64,10 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # --- FORMAT LOGIC ---
     if choice == 'video':
-        if 'instagram.com' in url:
-            # ULTIMATE INSTAGRAM FIX: Force the pre-merged single file
-            ydl_opts['format'] = 'best' 
-        else:
-            # YouTube gets the high-quality merge treatment.
-            # Force mp4 video and m4a audio so Telegram plays sound correctly!
-            ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
-            
+        # High-quality merge treatment for all platforms (YouTube, Instagram, TikTok)
+        # Force mp4 video and m4a audio so Telegram plays sound correctly!
+        ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+        
         ydl_opts['merge_output_format'] = 'mp4'
 
     elif choice == 'audio':
