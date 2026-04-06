@@ -43,54 +43,61 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.edit_message_text(f"⏳ Downloading {choice}... This might take a minute.")
 
-    # Base configuration for yt-dlp
+    # Base configuration (Notice we DO NOT load cookies here anymore)
     ydl_opts = {
         'outtmpl': 'temp_download_%(id)s.%(ext)s',
         'quiet': False,
         'no_warnings': False,
-        'extractor_args': {
-            'youtube': {
-                'player_client': ['ios', 'android', 'web']
-            }
-        }
     }
 
+    # --- THE MAGIC ROUTING ---
+    
+    # 1. YOUTUBE RULES (Needs cookies & high-quality merge)
+    if 'youtube.com' in url or 'youtu.be' in url:
+        if os.path.exists('cookies.txt'):
+            ydl_opts['cookiefile'] = 'cookies.txt'
+            
+        ydl_opts['extractor_args'] = {
+            'youtube': {'player_client': ['ios', 'android', 'web']}
+        }
 
-    if os.path.exists('cookies.txt'):
-        ydl_opts['cookiefile'] = 'cookies.txt'
+        if choice == 'video':
+            ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+            ydl_opts['postprocessors'] = [{'key': 'FFmpegVideoConvertor', 'preferedformat': 'mp4'}]
+        elif choice == 'audio':
+            ydl_opts['format'] = 'bestaudio/best'
+            ydl_opts['postprocessors'] = [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }]
+
+    # 2. INSTAGRAM RULES (No cookies, force Format 0 for audio!)
+    elif 'instagram.com' in url:
+        if choice == 'video':
+            ydl_opts['format'] = '0/best' # Forces the audio-embedded mp4
+        elif choice == 'audio':
+            ydl_opts['format'] = '0/best'
+            ydl_opts['postprocessors'] = [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }]
+            
+    # 3. FALLBACK FOR TIKTOK/OTHER
     else:
-        print("WARNING: cookies.txt not found in the container!")
-
-
-    # --- FORMAT LOGIC ---
-    if choice == 'video':
-        # High-quality merge treatment for all platforms (YouTube, Instagram, TikTok)
-        # Force mp4 video and m4a audio so Telegram plays sound correctly!
-        ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
-        
-        ydl_opts['merge_output_format'] = 'mp4'
-
-    elif choice == 'audio':
-        ydl_opts['format'] = 'bestaudio/best'
-        ydl_opts['postprocessors'] = [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }]
+        ydl_opts['format'] = 'best'
 
     filename = None
     try:
         # Download the file
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
+            filename = ydl.prepare_filename(info)
             
-            # Ensure we get the correct filename to avoid errors
-            if 'requested_downloads' in info:
-                filename = info['requested_downloads'][0]['filepath']
-            else:
-                filename = ydl.prepare_filename(info)
-                if choice == 'audio':
-                    filename = filename.rsplit('.', 1)[0] + '.mp3'
+            # Update filename if audio post-processor changed the extension
+            if choice == 'audio':
+                filename = filename.rsplit('.', 1)[0] + '.mp3'
 
         await query.edit_message_text("📤 Uploading to Telegram...")
         
@@ -105,6 +112,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await query.edit_message_text(f"❌ An error occurred: {str(e)}")
+        print(f"Error downloading {url}: {e}")
         
     finally:
         # ALWAYS clean up
@@ -123,4 +131,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
